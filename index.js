@@ -34,7 +34,25 @@ server.post('/api/zoos', async (req, res) => {
 
   catch (err) {
 
-    res.status(500).json({message: 'DATABASE ERROR: Names must be unique'});
+    res.status(400).json({message: 'DATABASE ERROR: Names must be unique'});
+
+  }
+
+});
+
+server.get('/api/zoos', async (req, res) => {
+
+  try {
+
+    const zoos = await db.select().from('zoos');
+
+    res.status(200).json(zoos);
+
+  }
+
+  catch (err) {
+
+    res.status(500).json({message: 'INTERNAL SERVER ERROR'});
 
   }
 
