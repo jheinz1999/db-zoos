@@ -16,8 +16,8 @@ server.post('/', async (req, res) => {
 
   try {
 
-    const id = await db.insert({ name }).into('zoos');
-    const newObj = await db.select().from('zoos').where('id', id[0]);
+    const id = await db.insert({ name }).into('bears');
+    const newObj = await db.select().from('bears').where('id', id[0]);
 
     res.status(201).json(newObj[0]);
 
@@ -35,9 +35,9 @@ server.get('/', async (req, res) => {
 
   try {
 
-    const zoos = await db.select().from('zoos');
+    const bears = await db.select().from('bears');
 
-    res.status(200).json(zoos);
+    res.status(200).json(bears);
 
   }
 
@@ -53,11 +53,11 @@ server.get('/:id', async (req, res) => {
 
   try {
 
-    const zoo = await db.select().from('zoos').where('id', req.params.id);
+    const bear = await db.select().from('bears').where('id', req.params.id);
 
-    if (zoo.length) {
+    if (bear.length) {
 
-      res.status(200).json(zoo[0]);
+      res.status(200).json(bear[0]);
       return;
 
     }
@@ -78,18 +78,18 @@ server.delete('/:id', async (req, res) => {
 
   try {
 
-    const zoo = await db.select().from('zoos').where('id', req.params.id);
+    const bear = await db.select().from('bears').where('id', req.params.id);
 
-    if (!zoo.length) {
+    if (!bear.length) {
 
       res.status(404).json({message: '404 NOT FOUND'});
       return;
 
     }
 
-    await db.delete().from('zoos').where('id', req.params.id);
+    await db.delete().from('bears').where('id', req.params.id);
 
-    res.status(200).json(zoo);
+    res.status(200).json(bear);
 
   }
 
@@ -105,9 +105,9 @@ server.put('/:id', async (req, res) => {
 
   try {
 
-    let zoo = await db.select().from('zoos').where('id', req.params.id);
+    let bear = await db.select().from('bears').where('id', req.params.id);
 
-    if (!zoo.length) {
+    if (!bear.length) {
 
       res.status(404).json({message: '404 NOT FOUND'});
       return;
@@ -125,8 +125,8 @@ server.put('/:id', async (req, res) => {
 
     try {
 
-      const id = await db.update('name', name).from('zoos').where('id', req.params.id);
-      zoo = await db.select().from('zoos').where('id', req.params.id);
+      const id = await db.update('name', name).from('bears').where('id', req.params.id);
+      bear = await db.select().from('bears').where('id', req.params.id);
 
     }
 
@@ -137,7 +137,7 @@ server.put('/:id', async (req, res) => {
 
     }
 
-    res.status(200).json(zoo);
+    res.status(200).json(bear);
 
   }
 
