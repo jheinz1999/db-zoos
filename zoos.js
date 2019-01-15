@@ -33,9 +33,12 @@ server.post('/', async (req, res) => {
 
 server.get('/', async (req, res) => {
 
+  const perPage = req.query.pageLength || 10;
+  const page = req.query.page || 1;
+
   try {
 
-    const zoos = await db.select().from('zoos');
+    const zoos = await db.select().from('zoos').paginate(perPage, page);
 
     res.status(200).json(zoos);
 
