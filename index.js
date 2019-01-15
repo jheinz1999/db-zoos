@@ -110,6 +110,54 @@ server.delete('/api/zoos/:id', async (req, res) => {
 
 });
 
+server.put('/api/zoos/:id', async (req, res) => {
+
+  try {
+
+    let zoo = await db.select().from('zoos').where('id', req.params.id);
+
+    if (!zoo.length) {
+
+      res.status(404).json({message: '404 NOT FOUND'});
+      return;
+
+    }
+
+    const { name } = req.body;
+
+    if (!name) {
+
+      res.status(400).json({message: 'INVALID REQUEST: Body requires name property!'});
+      return;
+
+    }
+
+    try {
+
+      const id = await db.update('name', name).from('zoos').where('id', req.params.id);
+      zoo = await db.select().from('zoos').where('id', req.params.id);
+
+    }
+
+    catch (err) {
+
+      res.status(400).json({message: 'DATABASE ERROR: Names must be unique!', error: err});
+      return;
+
+    }
+
+    res.status(200).json(zoo);
+
+  }
+
+  catch (err) {
+
+    res.status(500).json({message: 'INTERNAL SERVER ERROR'});
+
+  }
+
+});
+
 const port = 3300;
 server.listen(port, function() {
   console.log(`\n=== Web API Listening on http://localhost:${port} ===\n`);
