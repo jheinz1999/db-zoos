@@ -58,6 +58,31 @@ server.get('/api/zoos', async (req, res) => {
 
 });
 
+server.get('/api/zoos/:id', async (req, res) => {
+
+  try {
+
+    const zoo = await db.select().from('zoos').where('id', req.params.id);
+
+    if (zoo.length) {
+
+      res.status(200).json(zoo[0]);
+      return;
+
+    }
+
+    res.status(404).json({message: '404 NOT FOUND'});
+
+  }
+
+  catch (err) {
+
+    res.status(500).json({message: 'INTERNAL SERVER ERROR'});
+
+  }
+
+});
+
 const port = 3300;
 server.listen(port, function() {
   console.log(`\n=== Web API Listening on http://localhost:${port} ===\n`);
